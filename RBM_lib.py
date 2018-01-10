@@ -174,7 +174,7 @@ class RBM:
             plt.savefig(fname, bbox_inches ="tight")
         else:
             plt.show()
-            
+
         return
 
     # Daydreamtime!!!

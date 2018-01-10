@@ -22,16 +22,19 @@ print(x_train.shape, x_test.shape)
 train = True
 retrain = False
 # Name for model file
-model_name = "binv_nh20.pkl"
+model_name = "models/new_model.pkl"
 
 if train:
     if retrain:
+        # Load model from file if continuing the training
         model = RBM_lib.load_model(model_name)
     else:
-        # Initialize RBM model
+        # Initialize RBM model if not continuing training from previously
+        # saved model
         visible_units = x_train.shape[1]
-        hidden_units = 20
+        hidden_units = 10
         model = RBM_lib.RBM(nvisible = visible_units, nhidden = hidden_units)
+
     # Print initial weights stats
     model.w_histogram(fname="init_hist.png")
     model.w_map(1,10, fname="init_weights.png")
