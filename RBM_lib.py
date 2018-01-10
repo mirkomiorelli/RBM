@@ -2,18 +2,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle as pkl
 
+# Save model to file
 def save_model(model, fname):
     fout = open(fname, "wb")
     pkl.dump(model, fout)
     fout.close()
     return
 
+# Load model from file
 def load_model(fname):
     fin = open(fname, "rb")
     model = pkl.load(fin)
     fin.close()
     return model
 
+# Calculate free energy of a dataset given a model
+# The free energy of training/test datasets should be more or less the same
+# If the ratio of the free energies increases, then we are overfitting
 def free_energy(model, data):
     F = 0.0
     for iv in range(data.shape[0]):
@@ -136,7 +141,7 @@ class RBM:
         return np.sum(np.square(self.v['d'] - self.v['r']))
 
     # Visualize weights histogram
-    def w_histogram(self, fname):
+    def w_histogram(self, fname=None):
         fig = plt.figure()
 
         ax = fig.add_subplot(311)
@@ -149,11 +154,15 @@ class RBM:
         ax.hist(self.c)
         ax.set_title("hidden bias")
 
-        plt.savefig(fname, bbox_inches ="tight")
+        if fname is not None:
+            plt.savefig(fname, bbox_inches ="tight")
+        else:
+            plt.show()
+
         return
 
     # Visualize weights map
-    def w_map(self, nx, ny, fname):
+    def w_map(self, nx, ny, fname=None):
         fig = plt.figure(figsize=(ny,nx))
 
         for i in range(1,nx*ny+1):
@@ -161,7 +170,11 @@ class RBM:
             ax.imshow(self.W[:,i-1].reshape(28,28), cmap="Greys", interpolation="nearest")
             ax.axis('off')
 
-        plt.savefig(fname, bbox_inches="tight")
+        if fname is not None:
+            plt.savefig(fname, bbox_inches ="tight")
+        else:
+            plt.show()
+            
         return
 
     # Daydreamtime!!!
@@ -173,7 +186,7 @@ class RBM:
 
         return self.v['r']
 
-    # Training function for single input
+    # Training function
     def train(self, X, gibbs_sampling_steps=1, lrate=0.01,
               epochs=1, decay_rate=1.0, verbose=False,
               binary_h=True, binary_v=True):

@@ -62,7 +62,7 @@ if train:
 
     # Print final weights stats
     model.w_histogram(fname="final_hist.png")
-    model.w_map(2,10, fname="final_weights.png")
+    model.w_map(1,10, fname="final_weights.png")
 
     # Check free energy for the final model
     Ftrain = RBM_lib.free_energy(model, x_train)
